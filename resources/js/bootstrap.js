@@ -48,7 +48,4 @@ window.Echo = new Echo({
     cluster: import.meta.env.PUSHER_APP_CLUSTER ?? 'mt1',
 });
 
-window.Echo.channel('update')
-    .listen('Update', e => {
-        /*s*/console.log('e=', e); //todo r
-    });
+

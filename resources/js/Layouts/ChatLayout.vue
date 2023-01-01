@@ -1,10 +1,14 @@
 <template>
-    Hello chat
+    Chat Layout
+
+    <slot>
+
+    </slot>
 </template>
 
 <script>
 export default {
-    name: "Chat"
+    name: "ChatLayout"
 }
 </script>
 

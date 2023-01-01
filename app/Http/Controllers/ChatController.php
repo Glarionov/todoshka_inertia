@@ -9,7 +9,12 @@ class ChatController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Chat/Chat', [
-        ]);
+        return Inertia::render('Chat/ChatWelcome', []);
+    }
+
+    public function openChatRoom(int $id)
+    {
+
+        return Inertia::render('Chat/ChatRoom', []);
     }
 }

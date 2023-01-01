@@ -21,8 +21,9 @@ use App\Events\ServerCreated;
 
 Route::get('/', function () {
 
-    broadcast(new ServerCreated());
-    event(new Update());
+//    event(new Update());
+//    event(new Update());
+    broadcast(new Update())->toOthers();
 
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -41,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/chat', [ChatController::class, 'index']);
+    Route::get('/chat/room/{id}', [ChatController::class, 'openChatRoom']);
 
 });
 
