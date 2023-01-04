@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class ChatController extends Controller
 {
-    public function index()
+    /**
+     * @param UserService $userService
+     * @return \Inertia\Response
+     */
+    public function index(UserService $userService)
     {
-        return Inertia::render('Chat/ChatWelcome', []);
+        $userService->updateOnlineStatus();
+        $onlineUsers = UserService::getOnlineUsers();
+        return Inertia::render('Chat/ChatRoom', ['initialOnlineUsers' => $onlineUsers]);
     }
 
-    public function openChatRoom(int $id)
+    /**
+     * @param UserService $userService
+     * @return bool[]
+     */
+    public function updateOnlineStatus(UserService $userService)
     {
-
-        return Inertia::render('Chat/ChatRoom', []);
+        $userService->updateOnlineStatus();
+        return ['success' => true];
     }
 }

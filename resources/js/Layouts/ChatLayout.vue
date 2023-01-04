@@ -1,17 +1,22 @@
-<template>
-    Chat Layout
+<script setup>
+import { ref } from 'vue';
+let readyToUpdateOnlineStatus = ref(true);
 
-    <slot>
-
-    </slot>
-</template>
-
-<script>
-export default {
-    name: "ChatLayout"
+const updateOnlineStatus = () => {
+    if (readyToUpdateOnlineStatus.value) {
+        readyToUpdateOnlineStatus.value = false;
+        axios.post(route('chat.updateOnlineStatus'));
+        setTimeout(() => {
+            readyToUpdateOnlineStatus.value = true;
+        }, 10000);
+    }
 }
+
 </script>
 
-<style scoped>
-
-</style>
+<template>
+    <div @mousemove="updateOnlineStatus" @click="updateOnlineStatus" @keyup="updateOnlineStatus" @scroll="updateOnlineStatus">
+        <notifications />
+        <slot></slot>
+    </div>
+</template>

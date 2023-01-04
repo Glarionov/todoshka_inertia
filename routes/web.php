@@ -2,6 +2,7 @@
 
 use App\Events\Update;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -19,20 +20,6 @@ use App\Events\ServerCreated;
 |
 */
 
-Route::get('/', function () {
-
-//    event(new Update());
-//    event(new Update());
-    broadcast(new Update())->toOthers();
-
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -41,9 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/chat', [ChatController::class, 'index']);
-    Route::get('/chat/room/{id}', [ChatController::class, 'openChatRoom']);
+    Route::get('/', [ChatController::class, 'index'])->name('chat');
+    Route::post('/chat/update-online-status', [ChatController::class, 'updateOnlineStatus'])
+        ->name('chat.updateOnlineStatus');
 
+    Route::apiResource('messages', MessageController::class);
 });
 
 require __DIR__.'/auth.php';
