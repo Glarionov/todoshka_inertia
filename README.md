@@ -11,10 +11,10 @@
 Запустите команду
 
 - cp .env.example .env
-- 
+
 Выделенную область запускать целиком, как одну команду
 ```
-docker run --rm \
+sudo docker run --rm \
 -u "$(id -u):$(id -g)" \
 -v "$(pwd):/var/www/html" \
 -w /var/www/html \
@@ -22,14 +22,18 @@ laravelsail/php81-composer:latest \
 composer install --ignore-platform-reqs
 ```
 
-- sudo chmod 777 ./storage/ -R
+Далее по очереди запустите следующие команды
+- chmod -R 777 .
 - vendor/bin/sail up -d
 - vendor/bin/sail php artisan migrate --seed
-Запустите команду
-
-
-
-В другом терминале запустите
 - vendor/bin/sail npm i
 - vendor/bin/sail npm run dev
-- chmod -R 777 public
+
+Откройте
+
+http://localhost/
+
+в своём бразере.
+
+Для входа можете использовать адрес "test@example.com" или любой другой из таблицы "users", пароль - password
+

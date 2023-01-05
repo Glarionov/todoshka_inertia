@@ -6,7 +6,6 @@ import RequestHelper from "@/Helpers/RequestHelper";
 
 let messages = ref({});
 const user = usePage().props.value.auth.user;
-let mounted = ref(false);
 let blockLoading = false;
 let lastMessageId = null;
 let request = new RequestHelper();
@@ -73,9 +72,7 @@ const listenUpdates = async () => {
     window.Echo.channel('messages')
         .listen('MessageSent', callbackData => {
             if (callbackData.message) {
-                if (callbackData.message.user_id !== user.id) {
-                    callbackData.message.own = false;
-                }
+                callbackData.message.own = callbackData.message.user_id === user.id;
                 messages.value[callbackData.message.id] = callbackData.message;
 
                 if (callbackData.message.own) {
