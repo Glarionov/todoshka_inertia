@@ -61,7 +61,7 @@ const sendTask = async () => {
 
 const toggleEdit = (id) => {
   if (!tasks.value[id].editing) {
-    tasks.value[id].newText = '';
+    tasks.value[id].newText = tasks.value[id].text;
     tasks.value[id].editing = true;
   } else {
     tasks.value[id].editing = false;
