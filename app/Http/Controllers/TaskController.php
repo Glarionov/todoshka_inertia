@@ -23,16 +23,17 @@ class TaskController extends Controller
     /**
      * @return Response
      */
-    public function mainPage()
+    public function mainPage(): Response
     {
-        return Inertia::render('Task/TaskRoom');
+        $tasks = $this->service->getList();
+        return Inertia::render('Task/TaskRoom', ['tasksProp' => $tasks]);
     }
     /**
      * Display a listing of the resource.
      *
      * @return AnonymousResourceCollection
      */
-    public function index(GetListTaskRequest $request)
+    public function index(GetListTaskRequest $request): AnonymousResourceCollection
     {
         $data = $this->service->getList($request->validated());
         return TaskResource::collection($data);
@@ -44,7 +45,7 @@ class TaskController extends Controller
      * @param StoreTaskRequest $request
      * @return RedirectResponse
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request): RedirectResponse
     {
         $data = $this->service->store($request->validated());
         return $this->successBackRedirect($data);
@@ -57,7 +58,7 @@ class TaskController extends Controller
      * @param Task $task
      * @return RedirectResponse
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task): RedirectResponse
     {
         $data = $this->service->update($request->validated(), $task);
         return $this->successBackRedirect(TaskResource::make($data));

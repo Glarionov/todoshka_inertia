@@ -1,10 +1,10 @@
-Простой чат с выводом пользователей онлайн, основан на стандарном пакете laravel breeze с базой данных на postgreSQL.
+Простой todo-list, основан на стандартном пакете laravel breeze с базой данных на postgreSQL.
 
 Для запуска склонируйте проект
-- git clone https://github.com/Glarionov/simple_chat.git
+- git clone https://github.com/Glarionov/todoshka_inertia.git
 
 Перейдите в папку с проектом
-- cd simple_chat
+- cd todoshka_inertia
 
 Далее запускать команды из этой директории.
 
@@ -33,7 +33,7 @@ composer install --ignore-platform-reqs
 
 http://localhost/
 
-в своём бразере.
+в своём браузере.
 
 Для входа можете использовать адрес "test@example.com" или любой другой из таблицы "users", пароль - password
 

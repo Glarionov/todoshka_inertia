@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, watch, onMounted, ref} from "vue";
 import {useForm, usePage} from "@inertiajs/inertia-vue3";
 import TaskLayout from "@/Layouts/TaskLayout.vue";
 import RequestHelper from "@/Helpers/RequestHelper";
@@ -12,16 +12,20 @@ let lastTaskId = null;
 let request = new RequestHelper();
 
 const props = defineProps({
-    initialOnlineUsers: {
-        default: [],
-    },
+  tasksProp: {
+    default: []
+  }
+});
+
+tasks.value = props.tasksProp;
+
+watch(() => props.tasksProp, (newValue) => {
+  tasks.value = newValue;
 });
 
 const form = useForm({
     text: '',
 });
-
-let onlineUsers = ref(props.initialOnlineUsers ? props.initialOnlineUsers.data : []);
 
 const scrollToBottom = () => {
     setTimeout(() => {
@@ -42,10 +46,6 @@ const loadTasks = async (initialLoad = false) => {
     }
 
     tasks.value = {...response.data.data, ...tasks.value};
-    lastTaskId = Object.keys(tasks.value)[0];
-    if (initialLoad) {
-        scrollToBottom();
-    }
 
     if (response.data.data) {
         setTimeout(() => {
@@ -55,8 +55,8 @@ const loadTasks = async (initialLoad = false) => {
 }
 
 const sendTask = async () => {
-    form.post(route('tasks.store'));
-    form.text = '';
+  form.post(route('tasks.store'));
+  form.text = '';
 }
 
 const toggleEdit = (id) => {
@@ -70,7 +70,7 @@ const toggleEdit = (id) => {
 
 const doTask = async (id, done = true) => {
   const errorMessage = 'Error! Could not update task status: ' + tasks.value[id].text;
-  const response = request.patch(route('tasks.update', {id}), {done}, errorMessage);
+  const response = await request.patch(route('tasks.update', {id}), {done}, errorMessage);
 
   if (response.error) {
     tasks.value[id].done = !done;
@@ -90,7 +90,7 @@ const updateText = async (task) => {
   }
 
   const errorMessage = 'Error! Could not update task text: ' + text;
-  const response = request.patch(route('tasks.update', {id}), {text}, errorMessage);
+  const response = await request.patch(route('tasks.update', {id}), {text}, errorMessage);
 
   if (!response.error) {
     tasks.value[id].text = text;
@@ -100,7 +100,7 @@ const updateText = async (task) => {
 
 const deleteTask = async (id) => {
   const errorMessage = 'Error! Could not delete task: ' + tasks.value[id].text;
-  const response = request.delete(route('tasks.destroy', {id}), errorMessage);
+  const response = await request.delete(route('tasks.destroy', {id}), errorMessage);
   if (!response.error) {
     delete tasks.value[id];
   }
@@ -122,7 +122,7 @@ const clearErrors = () => {
 }
 
 onMounted(() => {
-    loadTasks(true);
+    // loadTasks(true);
 });
 
 </script>
@@ -134,7 +134,7 @@ onMounted(() => {
         <form @submit.prevent="sendTask">
           <div class="d-flex align-items-center p-2 pt-4">
             <textarea
-                class="form-control mr-3 bg-dark text-white"
+                class="form-control mr-3 bg-dark text-white max-w-md"
                 v-model="form.text"
                 @keyup.enter.exact="sendTask"
                 @input="clearErrors"
@@ -151,7 +151,7 @@ onMounted(() => {
         </form>
         <div class="text-danger w-100 bg-dark p-2" v-if="formError">{{ formError }}</div>
 
-        <div class="form-check mt-4" v-for="(task) in tasks" :key="task.id">
+        <div class="form-check mt-6" v-for="(task) in tasks" :key="task.id">
           <input
               class="form-check-input mr-2"
               type="checkbox"
@@ -165,8 +165,8 @@ onMounted(() => {
 
           <input type="text" v-if="task.editing" v-model="task.newText" class="form-control mb-2">
           <button class="btn btn-success ml-2" v-if="task.editing" @click="updateText(task)">Save</button>
-          <span title="edit" class="ml-2 cursor-pointer" @click="toggleEdit(task.id)">🖊</span>
-          <span title="delete" class="ml-2 cursor-pointer" @click="deleteTask(task.id)">⛌</span>
+          <span title="edit" class="right-icon" @click="toggleEdit(task.id)">✎</span>
+          <span title="delete" class="right-icon" @click="deleteTask(task.id)">⛌</span>
         </div>
       </div>
     </template>
@@ -174,15 +174,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.tasks {
-    height: calc(100vh - 174px);
+
+.right-icon {
+  opacity: .5;
+  margin-left: .7rem;
+  cursor: pointer;
+  color: yellow;
 }
 
-.send-task-form {
-    height: 80px;
+.right-icon:hover {
+  opacity: 1;
 }
 
-.error-box {
-    min-height: 40px;
-}
 </style>
