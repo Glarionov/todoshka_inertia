@@ -10,7 +10,7 @@ class TaskService
     {
     }
 
-    public function getList($requestData)
+    public function getList($requestData = [])
     {
         return $this->repository->getList($requestData);
     }

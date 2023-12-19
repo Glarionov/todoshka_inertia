@@ -16,7 +16,7 @@ class TaskRepository
      * @param $requestData
      * @return mixed
      */
-    public function getList($requestData)
+    public function getList($requestData = [])
     {
         return Task::query()->when($requestData['task_id'] ?? null,
             function (Builder $query, string $taskId): void {
