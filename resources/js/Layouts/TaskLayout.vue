@@ -3,16 +3,6 @@ import { ref } from 'vue';
 let readyToUpdateOnlineStatus = ref(true);
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 
-const updateOnlineStatus = () => {
-    if (readyToUpdateOnlineStatus.value) {
-        readyToUpdateOnlineStatus.value = false;
-        axios.post(route('chat.updateOnlineStatus'));
-        setTimeout(() => {
-            readyToUpdateOnlineStatus.value = true;
-        }, 10000);
-    }
-}
-
 </script>
 
 <template>

@@ -14,11 +14,11 @@ export default class RequestHelper {
      * @param path
      * @param verb
      * @param data
-     * @param errorMessage
+     * @param errorTask
      * @param expectedCode
      * @returns {Promise<{}>}
      */
-    async handleRequest(path, verb, data = {}, errorMessage = 'Error', expectedCode = 200) {
+    async handleRequest(path, verb, data = {}, errorTask = 'Error', expectedCode = 200) {
         let params = [this.getBaseUrl() + path];
         if (['post', 'patch', 'put'].includes(verb)) {
             params.push(data);
@@ -39,7 +39,7 @@ export default class RequestHelper {
         if (!result || result.status !== expectedCode) {
             notify({
                 title: "Request error",
-                text: errorMessage,
+                text: errorTask,
                 type: 'error'
             });
             result.error = true;
@@ -50,20 +50,20 @@ export default class RequestHelper {
         return result;
     }
 
-    async get(path, errorMessage = 'Receiving data error', expectedCode = 200) {
-        return await this.handleRequest(path, 'get', {}, errorMessage, expectedCode);
+    async get(path, errorTask = 'Receiving data error', expectedCode = 200) {
+        return await this.handleRequest(path, 'get', {}, errorTask, expectedCode);
     }
 
-    async delete(path, errorMessage = 'Deleting error', expectedCode = 200) {
-        return await this.handleRequest(path, 'delete', {}, errorMessage, expectedCode);
+    async delete(path, errorTask = 'Deleting error', expectedCode = 200) {
+        return await this.handleRequest(path, 'delete', {}, errorTask, expectedCode);
     }
 
-    async post(path, data = {}, errorMessage = 'Posting error', expectedCode = 200) {
-        return await this.handleRequest(path, 'post', data, errorMessage, expectedCode);
+    async post(path, data = {}, errorTask = 'Posting error', expectedCode = 200) {
+        return await this.handleRequest(path, 'post', data, errorTask, expectedCode);
     }
 
-    async patch(path, data = {}, errorMessage = 'Editing error', expectedCode = 200) {
-        return await this.handleRequest(path, 'patch', data, errorMessage, expectedCode);
+    async patch(path, data = {}, errorTask = 'Editing error', expectedCode = 200) {
+        return await this.handleRequest(path, 'patch', data, errorTask, expectedCode);
     }
 
     async put(path, data = {}) {

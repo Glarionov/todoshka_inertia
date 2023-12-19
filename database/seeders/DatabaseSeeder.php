@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        $messagesSeeder = new MessageSeeder();
-        $messagesSeeder->run();
+        $tasksSeeder = new TaskSeeder();
+        $tasksSeeder->run();
     }
 }

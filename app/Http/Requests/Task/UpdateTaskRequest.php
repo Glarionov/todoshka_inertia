@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Message;
+namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetListMessageRequest extends FormRequest
+class UpdateTaskRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,8 @@ class GetListMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'message_id' => ['int', 'nullable', 'exists:messages,id'],
+            'text' => ['max:500', 'alpha'],
+            'done' => ['boolean'],
         ];
     }
 }

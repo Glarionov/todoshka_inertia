@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Message;
+namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMessageRequest extends FormRequest
+class GetListTaskRequest extends FormRequest
 {
     public function authorize()
     {
@@ -14,7 +14,7 @@ class StoreMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'text' => ['required', 'max:500', 'alpha'],
+            'task_id' => ['int', 'nullable', 'exists:tasks,id'],
         ];
     }
 }

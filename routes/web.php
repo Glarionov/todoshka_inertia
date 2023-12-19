@@ -1,13 +1,9 @@
 <?php
 
-use App\Events\Update;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Events\ServerCreated;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/', [ChatController::class, 'index'])->name('chat');
-    Route::post('/chat/update-online-status', [ChatController::class, 'updateOnlineStatus'])
-        ->name('chat.updateOnlineStatus');
+    Route::get('/', [TaskController::class, 'mainPage'])->name('chat');
 
-    Route::apiResource('messages', MessageController::class);
+    Route::apiResource('tasks', TaskController::class);
 });
 
 require __DIR__.'/auth.php';

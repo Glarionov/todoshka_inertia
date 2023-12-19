@@ -33,7 +33,7 @@ class ConfirmablePasswordController extends Controller
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {
-            throw ValidationException::withMessages([
+            throw ValidationException::withTasks([
                 'password' => __('auth.password'),
             ]);
         }

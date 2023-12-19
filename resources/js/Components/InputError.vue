@@ -1,11 +1,11 @@
 <script setup>
-defineProps(['message']);
+defineProps(['task']);
 </script>
 
 <template>
-    <div v-show="message">
+    <div v-show="task">
         <p class="text-sm text-red-600">
-            {{ message }}
+            {{ task }}
         </p>
     </div>
 </template>
